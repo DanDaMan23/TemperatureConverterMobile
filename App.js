@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
 import Header from "./components/Header";
@@ -13,13 +13,10 @@ const App = () => {
   const F_TO_C = "Fahrenheit to Celsius";
   const C_TO_F = "Celsius to Fahrenheit";
 
-
-  useEffect(() => {
-
-  }, [])
-
   const switchConversion = () => {
     setIsFtoC(prevIsFtoC => !prevIsFtoC);
+    setConvertedTemperature('');
+    setCurrentTemperature('0');
     console.log(isFtoC);
   }
 
@@ -28,6 +25,17 @@ const App = () => {
     setConvertedTemperature(convertedTemp.toString() );
     console.log(convertedTemp)
   }
+
+  const celsiusToFahrenheit = (temperature) => {
+    let convertedTemp = ((parseFloat(temperature) * (5/9) ) + 32 ).toFixed(2);
+    setConvertedTemperature(convertedTemp.toString() );
+    console.log(convertedTemp)
+  }
+
+  let inputLabel = isFtoC ? <Text style={styles.userInputTitle}>Fahrenheit: </Text> : <Text style={styles.userInputTitle}>Celsius: </Text>;
+  let resultLabel = isFtoC ? <Text style={styles.userInputTitle}>Celsius: </Text> : <Text style={styles.userInputTitle}>Fahrenheit: </Text>;
+
+  let currentConversion = isFtoC ? fahrenheitToCelsius : celsiusToFahrenheit;
 
   return (
     <View style={styles.screen}>
@@ -39,7 +47,7 @@ const App = () => {
 
       <Card>
         <View style={styles.container}>
-          <Text style={styles.userInputTitle}>Fahrenheit: </Text>
+          {inputLabel}
           <TextInput
             style={styles.userInput}
             keyboardType="number-pad"
@@ -49,12 +57,12 @@ const App = () => {
         </View>
 
         <View style={styles.container}>
-          <Text style={styles.userInputTitle}>Celsius: </Text>
+          {resultLabel}
           <Text>{convertedTemperature}</Text>
         </View>
 
         <View style={styles.convertButton}>
-          <Button title="Convert" onPress={fahrenheitToCelsius.bind(this, currentTemperature)} />
+          <Button title="Convert" onPress={currentConversion.bind(this, currentTemperature)} />
         </View>
 
 
