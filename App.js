@@ -1,23 +1,41 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
 import Header from "./components/Header";
 import Card from "./components/Card";
 
-export default function App() {
+const App = () => {
   const [currentTemperature, setCurrentTemperature] = useState('0');
   const [convertedTemperature, setConvertedTemperature] = useState('');
+  const [isFtoC, setIsFtoC] = useState(true);
+
+  const F_TO_C = "Fahrenheit to Celsius";
+  const C_TO_F = "Celsius to Fahrenheit";
+
+
+  useEffect(() => {
+
+  }, [])
+
+  const switchConversion = () => {
+    setIsFtoC(prevIsFtoC => !prevIsFtoC);
+    console.log(isFtoC);
+  }
 
   const fahrenheitToCelsius = (temperature) => {
-    let celsius = ((parseFloat(temperature) - 32) * (5/9) ).toFixed(2);
-    setConvertedTemperature(celsius.toString() );
-    console.log(celsius)
+    let convertedTemp = ((parseFloat(temperature) - 32) * (5/9) ).toFixed(2);
+    setConvertedTemperature(convertedTemp.toString() );
+    console.log(convertedTemp)
   }
 
   return (
     <View style={styles.screen}>
       <Header title="Temperature Converter" />
+
+      <View style={styles.conversionSwitchButton}>
+        <Button title={isFtoC ? F_TO_C : C_TO_F} onPress={switchConversion} />
+      </View>
 
       <Card>
         <View style={styles.container}>
@@ -35,7 +53,11 @@ export default function App() {
           <Text>{convertedTemperature}</Text>
         </View>
 
-        <Button title="Convert" style={styles.convertButton} onPress={fahrenheitToCelsius.bind(this, currentTemperature)} />
+        <View style={styles.convertButton}>
+          <Button title="Convert" onPress={fahrenheitToCelsius.bind(this, currentTemperature)} />
+        </View>
+
+
       </Card>
 
       <StatusBar style="auto" />
@@ -63,6 +85,14 @@ const styles = StyleSheet.create({
   },
   convertButton: {
     width: '30%',
-    backgroundColor: "red"
-  }
+    alignSelf: 'flex-end'
+  },
+  conversionSwitchButton: {
+    width: '50%',
+    marginVertical: 30,
+    alignSelf: 'center'
+  },
+
 });
+
+export default App;
