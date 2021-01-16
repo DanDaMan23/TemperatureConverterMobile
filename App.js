@@ -27,7 +27,7 @@ const App = () => {
   }
 
   const celsiusToFahrenheit = (temperature) => {
-    let convertedTemp = ((parseFloat(temperature) * (5/9) ) + 32 ).toFixed(2);
+    let convertedTemp = ((parseFloat(temperature) * (9/5) ) + 32 ).toFixed(2);
     setConvertedTemperature(convertedTemp.toString() );
     console.log(convertedTemp)
   }
