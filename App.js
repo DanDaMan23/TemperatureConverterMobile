@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
 import Header from "./components/Header";
@@ -9,6 +9,7 @@ const App = () => {
   const [currentTemperature, setCurrentTemperature] = useState('0');
   const [convertedTemperature, setConvertedTemperature] = useState('___');
   const [isFtoC, setIsFtoC] = useState(true);
+  const [nullError, setNullError] = useState("");
 
   const F_TO_C = "Fahrenheit to Celsius";
   const C_TO_F = "Celsius to Fahrenheit";
@@ -17,18 +18,34 @@ const App = () => {
     setIsFtoC(prevIsFtoC => !prevIsFtoC);
     setConvertedTemperature('___');
     setCurrentTemperature('0');
+    setNullError("");
     console.log(isFtoC);
   }
 
   const fahrenheitToCelsius = (temperature) => {
+    if (!temperature) {
+      setNullError("*Enter a number");
+      console.log("Ewroe");
+      return;
+    }
+
     let convertedTemp = ((parseFloat(temperature) - 32) * (5/9) ).toFixed(2);
     setConvertedTemperature(convertedTemp.toString() );
+    setNullError("");
     console.log(convertedTemp)
   }
 
   const celsiusToFahrenheit = (temperature) => {
+    if (!temperature) {
+      setNullError("*Enter a number");
+      console.log("Ewroe");
+      return;
+    }
+
+
     let convertedTemp = ((parseFloat(temperature) * (9/5) ) + 32 ).toFixed(2);
     setConvertedTemperature(convertedTemp.toString() );
+    setNullError("");
     console.log(convertedTemp)
   }
 
@@ -61,12 +78,16 @@ const App = () => {
           <Text>{convertedTemperature}&deg;</Text>
         </View>
 
+        <View style={styles.errorTextContainer}>
+          <Text style={styles.errorText}>{nullError}</Text>
+        </View>
+
         <View style={styles.convertButton}>
           <Button title="Convert" onPress={currentConversion.bind(this, currentTemperature)} />
         </View>
 
-
       </Card>
+
 
       <StatusBar style="auto" />
     </View>
@@ -100,6 +121,12 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     alignSelf: 'center'
   },
+  errorTextContainer: {
+    alignSelf: 'center',
+  },
+  errorText: {
+    color: 'red'
+  }
 
 });
 
