@@ -7,7 +7,7 @@ import Card from "./components/Card";
 
 const App = () => {
   const [currentTemperature, setCurrentTemperature] = useState('0');
-  const [convertedTemperature, setConvertedTemperature] = useState('');
+  const [convertedTemperature, setConvertedTemperature] = useState('___');
   const [isFtoC, setIsFtoC] = useState(true);
 
   const F_TO_C = "Fahrenheit to Celsius";
@@ -15,7 +15,7 @@ const App = () => {
 
   const switchConversion = () => {
     setIsFtoC(prevIsFtoC => !prevIsFtoC);
-    setConvertedTemperature('');
+    setConvertedTemperature('___');
     setCurrentTemperature('0');
     console.log(isFtoC);
   }
@@ -58,7 +58,7 @@ const App = () => {
 
         <View style={styles.container}>
           {resultLabel}
-          <Text>{convertedTemperature}</Text>
+          <Text>{convertedTemperature}&deg;</Text>
         </View>
 
         <View style={styles.convertButton}>
